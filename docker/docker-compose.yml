@@ -1,0 +1,17 @@
+version: '3.4'
+services:
+
+  scalacassandra:
+    image: scalacassandra:<localBuild>
+    depends_on:
+      - cassandra
+
+  cassandra:
+    image: cassandra:latest
+    ports:
+      - 9042:9042
+    healthcheck:
+      test: [ "CMD", "cqlsh", "-e", "describe keyspaces" ]
+      interval: 5s
+      timeout: 5s
+      retries: 60
