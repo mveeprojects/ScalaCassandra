@@ -13,7 +13,7 @@ To run the application via docker-compose, from the root of the project run the 
 1. Run this from the root of the project `./docker/CassandraVanillaDocker.sh`, wait a few seconds (up to 10/20) for Cassandra to become ready.
 2. Start the app up in IntelliJ.
 
-### Sources
+## Sources
 
 * docs.datastax.com/en/developer/java-driver/4.9
 * www.baeldung.com/cassandra-datastax-java-driver
