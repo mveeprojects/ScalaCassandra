@@ -7,7 +7,7 @@ import com.datastax.oss.driver.api.querybuilder.schema.CreateKeyspace
 
 class KeyspaceRepository(session: CqlSession) {
 
-  def createKeyspace(keyspaceName: String, numberOfReplicas: Int): Unit = {
+  def createKeyspaceIfNotExists(keyspaceName: String, numberOfReplicas: Int): Unit = {
     val cks: CreateKeyspace = SchemaBuilder
       .createKeyspace(keyspaceName)
       .ifNotExists
