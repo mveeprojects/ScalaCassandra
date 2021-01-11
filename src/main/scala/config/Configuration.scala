@@ -12,6 +12,7 @@ object Configuration {
       port: Int,
       datacentre: String,
       keyspace: String,
+      replicas: Int,
       tablename: String,
       lingerSeconds: Option[Int]
   )

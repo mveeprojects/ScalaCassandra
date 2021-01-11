@@ -14,7 +14,7 @@ import scala.jdk.CollectionConverters.IterableHasAsScala
 
 class VideoRepository(session: CqlSession) extends Logging {
 
-  def createTable(keyspace: String, tableName: String): ResultSet = {
+  def createTableIfNotExists(keyspace: String, tableName: String): ResultSet = {
     val ct: SimpleStatement = SchemaBuilder
       .createTable(tableName)
       .ifNotExists
