@@ -17,7 +17,6 @@ object Main extends App with Logging {
   }
 
   val connector = new CassandraConnector
-  connector.connect(node, port, datacentre)
 
   val session = connector.setupSession(node, port, datacentre)
 
