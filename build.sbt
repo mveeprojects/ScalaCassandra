@@ -8,7 +8,8 @@ scalaVersion := "2.13.4"
 
 libraryDependencies ++= (
   cassandraDependencies ++
-    loggingDependencies
+    loggingDependencies ++
+    configDependencies
 )
 
 enablePlugins(JavaAppPackaging, DockerComposePlugin)

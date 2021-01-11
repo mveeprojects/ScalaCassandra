@@ -3,11 +3,14 @@ services:
 
   scalacassandra:
     image: scalacassandra:<localBuild>
+    environment:
+      cassandra_host: cassandra
+      startup_linger_seconds: 20
     depends_on:
       - cassandra
 
   cassandra:
-    image: cassandra:latest
+    image: cassandra:3.11.9
     ports:
       - 9042:9042
     healthcheck:
