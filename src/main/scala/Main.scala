@@ -5,6 +5,7 @@ import utils.Logging
 
 import java.time.Instant
 import java.time.temporal.ChronoUnit
+import java.util.UUID
 
 object Main extends App with Logging {
 
@@ -25,12 +26,37 @@ object Main extends App with Logging {
   keyspaceRepository.useKeyspace(keyspace)
 
   videoRepository.createTableIfNotExists(keyspace, tablename)
-  videoRepository.insertVideo(Video(None, "Video Title 1", Instant.now), tablename)
-  videoRepository.insertVideo(Video(None, "Video Title 2", Instant.now.minus(1, ChronoUnit.DAYS)), tablename)
+
+  videoRepository.insertVideo(
+    Video(
+      UUID.fromString("12345678-1234-1234-1234-123456789012"),
+      "Video Title 1",
+      Instant.now
+    ),
+    tablename
+  )
+
+  videoRepository.insertVideo(
+    Video(
+      UUID.fromString("12345678-1234-1234-1234-123456789013"),
+      "Video Title 2",
+      Instant.now.minus(1, ChronoUnit.DAYS)
+    ),
+    tablename
+  )
+
+  logger.info("Select all:")
 
   videoRepository
     .selectAll(keyspace, tablename)
     .foreach(v => logger.info(v.toString))
+
+  val selectOneResult = videoRepository
+    .selectOne(keyspace, tablename, UUID.fromString("12345678-1234-1234-1234-123456789012"))
+
+  logger.info("Select one:")
+
+  logger.info(selectOneResult.toString)
 
   connector.close(session)
 }

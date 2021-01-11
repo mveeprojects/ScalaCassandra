@@ -23,12 +23,10 @@ class VideoRepository(session: CqlSession) extends Logging {
       .withColumn("creation_date", DataTypes.TIMESTAMP)
       .build
 
-    executeStatement(ct, Some(keyspace))
+    executeStatement(ct, keyspace)
   }
 
   def insertVideo(video: Video, tableName: String): UUID = {
-    val vid: Video = video.copy(id = Some(UUID.randomUUID))
-
     val insertInto: RegularInsert = QueryBuilder
       .insertInto(tableName)
       .value("video_id", QueryBuilder.bindMarker())
@@ -39,36 +37,41 @@ class VideoRepository(session: CqlSession) extends Logging {
 
     val statement: BoundStatement = preparedStatement
       .bind()
-      .setUuid(0, vid.id.get)
-      .setString(1, vid.title)
-      .setInstant(2, vid.creationDate)
+      .setUuid(0, video.id)
+      .setString(1, video.title)
+      .setInstant(2, video.creationDate)
 
     session.execute(statement)
-    vid.id.get
+    video.id
   }
 
   def selectAll(keyspace: String, tableName: String): List[Video] = {
-    val select: Select = QueryBuilder.selectFrom(tableName).all
-    executeStatement(select.build, Some(keyspace))
-      .map(v =>
-        Video(
-          Some(v.getUuid("video_id")),
-          v.getString("title"),
-          v.getInstant("creation_date")
-        )
-      )
-      .asScala
-      .toList
+    val select: Select       = QueryBuilder.selectFrom(tableName).all
+    val resultSet: ResultSet = executeStatement(select.build, keyspace)
+    deSerialiseSelect(resultSet)
   }
 
-  def executeStatement(statement: SimpleStatement, maybeKeyspace: Option[String]): ResultSet =
-    maybeKeyspace match {
-      case Some(keyspace) =>
-        logger.info("With keyspace")
-        statement.setKeyspace(CqlIdentifier.fromCql(keyspace))
-        session.execute(statement)
-      case None =>
-        logger.info("Without keyspace")
-        session.execute(statement)
-    }
+  def selectOne(keyspace: String, tableName: String, video_id: UUID): Video = {
+    val select: Select       = QueryBuilder.selectFrom(tableName).all()
+    val resultSet: ResultSet = executeStatement(select.build, keyspace)
+    deSerialiseSelect(resultSet)
+      .filter(v => v.id.equals(video_id))
+      .head
+  }
+
+  def deSerialiseSelect(resultSet: ResultSet): List[Video] = resultSet
+    .map(v =>
+      Video(
+        v.getUuid("video_id"),
+        v.getString("title"),
+        v.getInstant("creation_date")
+      )
+    )
+    .asScala
+    .toList
+
+  def executeStatement(statement: SimpleStatement, keyspace: String): ResultSet = {
+    statement.setKeyspace(CqlIdentifier.fromCql(keyspace))
+    session.execute(statement)
+  }
 }

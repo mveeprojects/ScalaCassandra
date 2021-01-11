@@ -10,7 +10,8 @@ To run the application via docker-compose, from the root of the project run the 
 
 ### Cassandra in docker, app in IntelliJ
 
-1. Run this from the root of the project `./docker/CassandraVanillaDocker.sh`, wait a few seconds (up to 10/20) for Cassandra to become ready.
+1. Run this from the root of the project `./docker/CassandraVanillaDocker.sh`, wait a few seconds (up to 10/20) for
+   Cassandra to become ready.
 2. Start the app up in IntelliJ.
 
 ## Sources
