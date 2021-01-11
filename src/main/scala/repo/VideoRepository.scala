@@ -26,17 +26,6 @@ class VideoRepository(session: CqlSession) extends Logging {
     executeStatement(ct, Some(keyspace))
   }
 
-  def executeStatement(statement: SimpleStatement, maybeKeyspace: Option[String]): ResultSet =
-    maybeKeyspace match {
-      case Some(keyspace) =>
-        logger.info("With keyspace")
-        statement.setKeyspace(CqlIdentifier.fromCql(keyspace))
-        session.execute(statement)
-      case None =>
-        logger.info("Without keyspace")
-        session.execute(statement)
-    }
-
   def insertVideo(video: Video, tableName: String): UUID = {
     val vid: Video = video.copy(id = Some(UUID.randomUUID))
 
@@ -71,4 +60,15 @@ class VideoRepository(session: CqlSession) extends Logging {
       .asScala
       .toList
   }
+
+  def executeStatement(statement: SimpleStatement, maybeKeyspace: Option[String]): ResultSet =
+    maybeKeyspace match {
+      case Some(keyspace) =>
+        logger.info("With keyspace")
+        statement.setKeyspace(CqlIdentifier.fromCql(keyspace))
+        session.execute(statement)
+      case None =>
+        logger.info("Without keyspace")
+        session.execute(statement)
+    }
 }
