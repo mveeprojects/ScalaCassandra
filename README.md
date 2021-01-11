@@ -15,7 +15,7 @@ To run the application via docker-compose, from the root of the project run the 
 
 ## Sources
 
-* docs.datastax.com/en/developer/java-driver/4.9
-* www.baeldung.com/cassandra-datastax-java-driver
-    * github.com/eugenp/tutorials/tree/master/persistence-modules/java-cassandra/src/main/java/com/baeldung/datastax/cassandra
-* github.com/Tapad/sbt-docker-compose
+* https://docs.datastax.com/en/developer/java-driver/4.9
+* https://www.baeldung.com/cassandra-datastax-java-driver
+    * https://github.com/eugenp/tutorials/tree/master/persistence-modules/java-cassandra/src/main/java/com/baeldung/datastax/cassandra
+* https://github.com/Tapad/sbt-docker-compose
