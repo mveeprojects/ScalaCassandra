@@ -22,10 +22,10 @@ object Main extends App with Logging {
   val keyspaceRepository = new KeyspaceRepository(session)
   val videoRepository    = new VideoRepository(session)
 
-  keyspaceRepository.createKeyspaceIfNotExists(keyspace, replicas)
+  keyspaceRepository.createKeyspaceIfNotExists(replicas)
   keyspaceRepository.useKeyspace(keyspace)
 
-  videoRepository.createTableIfNotExists(keyspace, tablename)
+  videoRepository.createTableIfNotExists(tablename)
 
   videoRepository.insertVideo(
     Video(
@@ -48,11 +48,11 @@ object Main extends App with Logging {
   logger.info("Select all:")
 
   videoRepository
-    .selectAll(keyspace, tablename)
+    .selectAll(tablename)
     .foreach(v => logger.info(v.toString))
 
   val selectOneResult = videoRepository
-    .selectOne(keyspace, tablename, UUID.fromString("12345678-1234-1234-1234-123456789012"))
+    .selectOne(tablename, UUID.fromString("12345678-1234-1234-1234-123456789012"))
 
   logger.info("Select one:")
 
