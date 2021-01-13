@@ -6,7 +6,7 @@ Simple Scala app to learn about Cassandra integration.
 
 ### SBT docker compose plugin
 
-To run the application via docker-compose, from the root of the project run the following `./sbt dockerComposeUp`.
+To run the application and Cassandra together via docker-compose, from the root of the project run the following `./sbt dockerComposeUp`.
 
 ### Cassandra in docker, app in IntelliJ
 
