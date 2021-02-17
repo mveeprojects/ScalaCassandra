@@ -1,9 +1,10 @@
 package repo
 
-import com.datastax.oss.driver.api.core.CqlSession
+import com.datastax.oss.driver.api.core.{CqlIdentifier, CqlSession}
 import com.datastax.oss.driver.api.core.`type`.DataTypes
 import com.datastax.oss.driver.api.core.cql.{ResultSet, SimpleStatement}
 import com.datastax.oss.driver.api.querybuilder.SchemaBuilder
+import com.datastax.oss.driver.api.querybuilder.schema.CreateKeyspace
 import config.AppConfig._
 import config.AppConfig.appConfig.cassandra._
 import utils.Logging
@@ -11,7 +12,6 @@ import utils.Logging
 object initDB extends Logging {
 
   lazy val session: CqlSession                    = setupSession(node, port, datacentre)
-  lazy val keyspaceRepository: KeyspaceRepository = new KeyspaceRepository(session)
   lazy val videoRepository: VideoRepository       = new VideoRepository()
 
   def init: ResultSet = {
@@ -22,10 +22,21 @@ object initDB extends Logging {
         logger.info("Ready or not, here I come.")
       case None => logger.info("Ready or not, here I come.")
     }
-    keyspaceRepository.createKeyspaceIfNotExists(replicas)
-    keyspaceRepository.useKeyspace(keyspace)
+    createKeyspaceIfNotExists(replicas)
+    useKeyspace(keyspace)
     createTableIfNotExists
   }
+
+  def createKeyspaceIfNotExists(numberOfReplicas: Int): Unit = {
+    val cks: CreateKeyspace = SchemaBuilder
+      .createKeyspace(keyspace)
+      .ifNotExists
+      .withSimpleStrategy(numberOfReplicas)
+    session.execute(cks.build)
+  }
+
+  def useKeyspace(keyspace: String): ResultSet =
+    session.execute("USE " + CqlIdentifier.fromCql(keyspace))
 
   private def createTableIfNotExists: ResultSet = {
     val statement: SimpleStatement = SchemaBuilder
