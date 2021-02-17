@@ -1,8 +1,8 @@
 package repo
 
-import com.datastax.oss.driver.api.core.{CqlIdentifier, CqlSession}
 import com.datastax.oss.driver.api.core.`type`.DataTypes
 import com.datastax.oss.driver.api.core.cql.{ResultSet, SimpleStatement}
+import com.datastax.oss.driver.api.core.{CqlIdentifier, CqlSession}
 import com.datastax.oss.driver.api.querybuilder.SchemaBuilder
 import com.datastax.oss.driver.api.querybuilder.schema.CreateKeyspace
 import config.AppConfig._
@@ -11,8 +11,8 @@ import utils.Logging
 
 object initDB extends Logging {
 
-  lazy val session: CqlSession                    = setupSession(node, port, datacentre)
-  lazy val videoRepository: VideoRepository       = new VideoRepository()
+  lazy val session: CqlSession              = setupSession(node, port, datacentre)
+  lazy val videoRepository: VideoRepository = new VideoRepository()
 
   def init: ResultSet = {
     lingerSeconds match {
