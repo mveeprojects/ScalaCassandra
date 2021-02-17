@@ -18,5 +18,5 @@ object BackendServices {
     videoRepository.insertVideoForUser(Video(userId, videoId, "video title", Instant.now()))
 
   def deleteRecord(userId: String, videoId: String): Unit =
-    videoRepository.deleteVideo(userId, videoId)
+    videoRepository.deleteVideoForUser(userId, videoId)
 }

@@ -1,7 +1,9 @@
 package repo
 
 import com.datastax.oss.driver.api.core.CqlSession
-import com.datastax.oss.driver.api.core.cql.ResultSet
+import com.datastax.oss.driver.api.core.`type`.DataTypes
+import com.datastax.oss.driver.api.core.cql.{ResultSet, SimpleStatement}
+import com.datastax.oss.driver.api.querybuilder.SchemaBuilder
 import config.AppConfig.appConfig.cassandra._
 import utils.Logging
 
@@ -10,7 +12,7 @@ object initDB extends Logging {
   lazy val connector: CassandraConnector          = new CassandraConnector
   lazy val session: CqlSession                    = connector.setupSession(node, port, datacentre)
   lazy val keyspaceRepository: KeyspaceRepository = new KeyspaceRepository(session)
-  lazy val videoRepository: VideoRepository       = new VideoRepository(session)
+  lazy val videoRepository: VideoRepository       = new VideoRepository()
 
   def init: ResultSet = {
     lingerSeconds match {
@@ -22,6 +24,18 @@ object initDB extends Logging {
     }
     keyspaceRepository.createKeyspaceIfNotExists(replicas)
     keyspaceRepository.useKeyspace(keyspace)
-    videoRepository.createTableIfNotExists
+    createTableIfNotExists
+  }
+
+  private def createTableIfNotExists: ResultSet = {
+    val statement: SimpleStatement = SchemaBuilder
+      .createTable(tablename)
+      .ifNotExists
+      .withPartitionKey("userId", DataTypes.TEXT)
+      .withClusteringColumn("videoId", DataTypes.TEXT)
+      .withColumn("title", DataTypes.TEXT)
+      .withColumn("creationDate", DataTypes.TIMESTAMP)
+      .build
+    session.execute(statement)
   }
 }

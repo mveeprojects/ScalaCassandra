@@ -32,7 +32,7 @@ trait ApiRoutes {
     delete {
       path(basePath / Segment) { (userId, videoId) =>
         deleteRecord(userId, videoId)
-        complete(StatusCodes.NoContent, s"$videoId has been removed to $userId's videos")
+        complete(StatusCodes.NoContent)
       }
     }
   )
