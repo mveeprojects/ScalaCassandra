@@ -57,3 +57,6 @@ following `./sbt dockerComposeUp`.
 * https://www.baeldung.com/cassandra-datastax-java-driver
     * https://github.com/eugenp/tutorials/tree/master/persistence-modules/java-cassandra/src/main/java/com/baeldung/datastax/cassandra
 * https://github.com/Tapad/sbt-docker-compose
+* https://docs.datastax.com/en/developer/java-driver/3.6/manual/metrics/#metrics-4-compatibility
+    * (JMX issue) - justification for creating a cluster using `.withoutJMXReporting`
+* https://getquill.io/

@@ -19,7 +19,8 @@ trait ApiRoutes {
     },
     get {
       path(basePath / Segment) { (userId, numOfRecords) =>
-        complete(StatusCodes.OK, retrieveNVideos(userId, numOfRecords.toInt).toJson.toString)
+        val result = retrieveNVideos(userId, numOfRecords.toInt).map(_.toJson.toString)
+        complete(StatusCodes.OK, result)
       }
     },
     put {

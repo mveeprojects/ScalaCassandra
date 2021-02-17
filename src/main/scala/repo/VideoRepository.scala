@@ -14,7 +14,6 @@ import utils.Logging
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import scala.jdk.CollectionConverters.IterableHasAsScala
 
 class VideoRepository(session: CqlSession) extends Logging {
 
@@ -23,11 +22,11 @@ class VideoRepository(session: CqlSession) extends Logging {
       .createTable(tablename)
       .ifNotExists
       .withPartitionKey("userId", DataTypes.TEXT)
-      .withColumn("videoId", DataTypes.TEXT)
+      .withClusteringColumn("videoId", DataTypes.TEXT)
       .withColumn("title", DataTypes.TEXT)
       .withColumn("creationDate", DataTypes.TIMESTAMP)
       .build
-    executeStatement(statement)
+    session.execute(statement)
   }
 
   def insertVideo(video: Video): ResultSet = {
@@ -44,7 +43,7 @@ class VideoRepository(session: CqlSession) extends Logging {
       .setString(1, video.videoId)
       .setString(2, video.title)
       .setInstant(3, video.creationDate)
-    executeStatement(statement)
+    session.execute(statement)
   }
 
   def deleteVideo(userId: String, videoId: String): Unit = {
@@ -55,13 +54,7 @@ class VideoRepository(session: CqlSession) extends Logging {
       .ifColumn("videoId")
       .isEqualTo(literal(videoId))
       .build()
-    executeStatement(deleteFrom)
-  }
-
-  def selectAllForUser(userId: String): List[Video] = {
-    val statement: SimpleStatement = QueryBuilder.selectFrom(tablename).all.build
-    val resultSet: ResultSet       = executeStatement(statement)
-    deSerialiseSelect(resultSet).filter(_.userId.equals(userId))
+    session.execute(deleteFrom)
   }
 
   private val cluster = Cluster
@@ -72,27 +65,18 @@ class VideoRepository(session: CqlSession) extends Logging {
   private val db = new CassandraAsyncContext(CamelCase, cluster, keyspace, 100)
   import db._
 
-  def selectAllForUserQuill(userId: String): Future[List[Video]] =
+  def selectAllForUser(userId: String): Future[List[Video]] =
     db.run(quote {
       query[Video].filter(v => v.userId == lift(userId))
     })
 
-  def selectFirstNForUser(userId: String, numberOfRecords: Int): List[Video] =
-    selectAllForUser(userId)
-      .take(numberOfRecords)
+  def selectFirstNForUser(userId: String, numberOfRecords: Int): Future[List[Video]] =
+    selectAllForUser(userId).collect { case videos: List[Video] =>
+      videos.take(numberOfRecords)
+    }
 
-  def deSerialiseSelect(resultSet: ResultSet): List[Video] = resultSet
-    .map(v =>
-      Video(
-        v.getString("userId"),
-        v.getString("videoId"),
-        v.getString("title"),
-        v.getInstant("creationDate")
-      )
-    )
-    .asScala
-    .toList
-
-  def executeStatement[T <: BatchableStatement[T]](statement: BatchableStatement[T]): ResultSet =
-    session.execute(statement)
+  def insertVideoForUser(video: Video): Future[Unit] =
+    db.run(quote {
+      query[Video].insert(lift(video))
+    })
 }
