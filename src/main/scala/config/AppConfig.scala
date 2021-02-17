@@ -14,6 +14,7 @@ object AppConfig extends ActorSystemConfig with DBConfig {
       keyspace: String,
       replicas: Int,
       tablename: String,
+      preparedstatementcache: Int,
       lingerSeconds: Option[Int]
   )
 
