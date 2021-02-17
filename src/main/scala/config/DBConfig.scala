@@ -1,10 +1,21 @@
-package repo
+package config
 
+import com.datastax.driver.core.Cluster
 import com.datastax.oss.driver.api.core.CqlSession
+import config.AppConfig.appConfig
+import io.getquill.{CamelCase, CassandraAsyncContext}
 
 import java.net.InetSocketAddress
 
-class CassandraConnector {
+trait DBConfig {
+
+  private lazy val cluster = Cluster
+    .builder()
+    .addContactPoint("cassandra")
+    .withoutJMXReporting
+    .build()
+
+  lazy val db = new CassandraAsyncContext(CamelCase, cluster, appConfig.cassandra.keyspace, 100)
 
   val setupSession: (String, Int, String) => CqlSession = (node: String, port: Int, datacentre: String) =>
     CqlSession.builder

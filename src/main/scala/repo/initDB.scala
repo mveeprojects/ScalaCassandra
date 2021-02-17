@@ -4,13 +4,13 @@ import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.`type`.DataTypes
 import com.datastax.oss.driver.api.core.cql.{ResultSet, SimpleStatement}
 import com.datastax.oss.driver.api.querybuilder.SchemaBuilder
+import config.AppConfig._
 import config.AppConfig.appConfig.cassandra._
 import utils.Logging
 
 object initDB extends Logging {
 
-  lazy val connector: CassandraConnector          = new CassandraConnector
-  lazy val session: CqlSession                    = connector.setupSession(node, port, datacentre)
+  lazy val session: CqlSession                    = setupSession(node, port, datacentre)
   lazy val keyspaceRepository: KeyspaceRepository = new KeyspaceRepository(session)
   lazy val videoRepository: VideoRepository       = new VideoRepository()
 
