@@ -1,17 +1,22 @@
 package service
 
-import model.VideoDBEntry
+import model.Video
 import repo.initDB.videoRepository
-import service.MyProtocol._
-import spray.json.{JsValue, enrichAny}
 
 import java.time.Instant
+import scala.concurrent.Future
 
 object BackendServices {
-  def retrieveAllVideos(userId: String): JsValue       = videoRepository.selectAllForUser(userId).toJson
-  def retrieveNVideos(userId: String, n: Int): JsValue = videoRepository.selectFirstNForUser(userId, n).toJson
+
+  def retrieveAllVideos(userId: String): Future[List[Video]] =
+    videoRepository.selectAllForUserQuill(userId)
+  
+  def retrieveNVideos(userId: String, n: Int) =
+    videoRepository.selectFirstNForUser(userId, n)
+
   def addRecord(userId: String, videoId: String): Unit =
-    videoRepository.insertVideo(VideoDBEntry(userId, videoId, "video title", Instant.now()))
+    videoRepository.insertVideo(Video(userId, videoId, "video title", Instant.now()))
+
   def deleteRecord(userId: String, videoId: String): Unit =
     videoRepository.deleteVideo(userId, videoId)
 }

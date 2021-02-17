@@ -17,7 +17,7 @@ object AppConfig extends ActorSystemConfig {
       lingerSeconds: Option[Int]
   )
 
-  case class AppConfig(http: HttpConfig, cassandra: CassandraConfig)
+  case class Config(http: HttpConfig, cassandra: CassandraConfig)
 
-  val appConfig: AppConfig = ConfigSource.default.loadOrThrow[AppConfig]
+  val appConfig: Config = ConfigSource.default.loadOrThrow[Config]
 }

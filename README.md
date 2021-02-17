@@ -6,7 +6,8 @@ Simple Scala app to learn about Cassandra integration.
 
 ### SBT docker compose plugin
 
-To run the application and Cassandra together via docker-compose, from the root of the project run the following `./sbt dockerComposeUp`.
+To run the application and Cassandra together via docker-compose, from the root of the project run the
+following `./sbt dockerComposeUp`.
 
 ### Cassandra in docker, app in IntelliJ
 
@@ -27,6 +28,28 @@ To run the application and Cassandra together via docker-compose, from the root 
 ### Add an item to a users' videos
 
 `curl -X PUT localhost/videos/<userId>/<videoId>`
+
+## CQLSH
+
+### To access the command line (`cqlsh`) via docker
+
+`docker exec -it cassandra_container_name_or_id cqlsh`
+
+### To view all keyspaces
+
+`describe keyspaces`
+
+### To switch keyspace
+
+`use keyspace_name;`
+
+### To list all tables
+
+`describe tables;`
+
+### To select all records from a table
+
+`select * from table_name;`
 
 ## Sources
 

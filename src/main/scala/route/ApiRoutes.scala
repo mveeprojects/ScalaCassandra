@@ -3,19 +3,23 @@ package route
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives.{complete, get, path, _}
 import akka.http.scaladsl.server.Route
+import config.AppConfig._
 import service.BackendServices._
+import service.MyProtocol._
+import spray.json.enrichAny
 
 trait ApiRoutes {
   private val basePath = "videos" / Segment
   val route: Route = concat(
     get {
       path(basePath) { userId =>
-        complete(StatusCodes.OK, retrieveAllVideos(userId).toString)
+        val result = retrieveAllVideos(userId).map(_.toJson.toString)
+        complete(StatusCodes.OK, result)
       }
     },
     get {
       path(basePath / Segment) { (userId, numOfRecords) =>
-        complete(StatusCodes.OK, retrieveNVideos(userId, numOfRecords.toInt).toString)
+        complete(StatusCodes.OK, retrieveNVideos(userId, numOfRecords.toInt).toJson.toString)
       }
     },
     put {
@@ -25,7 +29,7 @@ trait ApiRoutes {
       }
     },
     delete {
-      path(basePath / Segment) {  (userId, videoId) =>
+      path(basePath / Segment) { (userId, videoId) =>
         deleteRecord(userId, videoId)
         complete(StatusCodes.NoContent, s"$videoId has been removed to $userId's videos")
       }

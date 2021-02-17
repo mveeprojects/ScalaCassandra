@@ -1,7 +1,7 @@
 package service
 
-import model.VideoDBEntry
-import spray.json.{DefaultJsonProtocol, JsString, JsValue, RootJsonFormat, deserializationError}
+import model.Video
+import spray.json.{deserializationError, DefaultJsonProtocol, JsString, JsValue, RootJsonFormat}
 
 import java.time.Instant
 import java.util.UUID
@@ -24,5 +24,5 @@ object MyProtocol extends DefaultJsonProtocol {
     }
   }
 
-  implicit val videoFormat: RootJsonFormat[VideoDBEntry] = jsonFormat4(VideoDBEntry)
+  implicit val videoFormat: RootJsonFormat[Video] = jsonFormat4(Video)
 }
