@@ -22,20 +22,20 @@ object initDB extends Logging {
         logger.info("Ready or not, here I come.")
       case None => logger.info("Ready or not, here I come.")
     }
-    createKeyspaceIfNotExists(replicas)
-    useKeyspace(keyspace)
+    createKeyspaceIfNotExists()
+    useKeyspace()
     createTableIfNotExists
   }
 
-  def createKeyspaceIfNotExists(numberOfReplicas: Int): Unit = {
+  def createKeyspaceIfNotExists(): Unit = {
     val cks: CreateKeyspace = SchemaBuilder
       .createKeyspace(keyspace)
       .ifNotExists
-      .withSimpleStrategy(numberOfReplicas)
+      .withSimpleStrategy(replicas)
     session.execute(cks.build)
   }
 
-  def useKeyspace(keyspace: String): ResultSet =
+  def useKeyspace(): ResultSet =
     session.execute("USE " + CqlIdentifier.fromCql(keyspace))
 
   private def createTableIfNotExists: ResultSet = {
