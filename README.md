@@ -14,6 +14,12 @@ To run the application and Cassandra together via docker-compose, from the root 
    Cassandra to become ready.
 2. Start the app up in IntelliJ.
 
+## HTTP Endpoints
+
+At the moment there is only one endpoint, which returns all videos stored in the DB
+
+`curl localhost/videos`
+
 ## Sources
 
 * https://docs.datastax.com/en/developer/java-driver/4.9
