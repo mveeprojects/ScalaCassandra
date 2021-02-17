@@ -3,9 +3,11 @@ services:
 
   scalacassandra:
     image: scalacassandra:<localBuild>
+    ports:
+      - 80:80
     environment:
       cassandra_host: cassandra
-      startup_linger_seconds: 20
+      startup_linger_seconds: 30
     depends_on:
       - cassandra
 

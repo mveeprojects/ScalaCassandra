@@ -8,6 +8,7 @@ scalaVersion := "2.13.4"
 
 libraryDependencies ++= (
   cassandraDependencies ++
+    akkaDependencies ++
     loggingDependencies ++
     configDependencies
 )

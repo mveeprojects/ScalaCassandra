@@ -3,9 +3,9 @@ package config
 import pureconfig.ConfigSource
 import pureconfig.generic.auto._
 
-object Configuration {
+object AppConfig extends ActorSystemConfig {
 
-  val appConfig: AppConfig = ConfigSource.default.loadOrThrow[AppConfig]
+  case class HttpConfig(hostname: String, port: Int)
 
   case class CassandraConfig(
       node: String,
@@ -17,5 +17,7 @@ object Configuration {
       lingerSeconds: Option[Int]
   )
 
-  case class AppConfig(cassandra: CassandraConfig)
+  case class AppConfig(http: HttpConfig, cassandra: CassandraConfig)
+
+  val appConfig: AppConfig = ConfigSource.default.loadOrThrow[AppConfig]
 }

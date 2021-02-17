@@ -5,6 +5,7 @@ import com.datastax.oss.driver.api.core.`type`.DataTypes
 import com.datastax.oss.driver.api.core.cql._
 import com.datastax.oss.driver.api.querybuilder.insert.RegularInsert
 import com.datastax.oss.driver.api.querybuilder.{QueryBuilder, SchemaBuilder}
+import config.AppConfig.appConfig.cassandra._
 import model.Video
 import utils.Logging
 
@@ -13,9 +14,9 @@ import scala.jdk.CollectionConverters.IterableHasAsScala
 
 class VideoRepository(session: CqlSession) extends Logging {
 
-  def createTableIfNotExists(tableName: String): ResultSet = {
+  def createTableIfNotExists: ResultSet = {
     val statement: SimpleStatement = SchemaBuilder
-      .createTable(tableName)
+      .createTable(tablename)
       .ifNotExists
       .withPartitionKey("video_id", DataTypes.UUID)
       .withColumn("title", DataTypes.TEXT)
@@ -24,9 +25,9 @@ class VideoRepository(session: CqlSession) extends Logging {
     executeStatement(statement)
   }
 
-  def insertVideo(video: Video, tableName: String): UUID = {
+  def insertVideo(video: Video): UUID = {
     val insertInto: RegularInsert = QueryBuilder
-      .insertInto(tableName)
+      .insertInto(tablename)
       .value("video_id", QueryBuilder.bindMarker())
       .value("title", QueryBuilder.bindMarker())
       .value("creation_date", QueryBuilder.bindMarker())
@@ -40,14 +41,14 @@ class VideoRepository(session: CqlSession) extends Logging {
     video.id
   }
 
-  def selectAll(tableName: String): List[Video] = {
-    val statement: SimpleStatement = QueryBuilder.selectFrom(tableName).all.build
+  def selectAll: List[Video] = {
+    val statement: SimpleStatement = QueryBuilder.selectFrom(tablename).all.build
     val resultSet: ResultSet       = executeStatement(statement)
     deSerialiseSelect(resultSet)
   }
 
-  def selectOne(tableName: String, video_id: UUID): Video = {
-    val statement: SimpleStatement = QueryBuilder.selectFrom(tableName).all.build
+  def selectOne(video_id: UUID): Video = {
+    val statement: SimpleStatement = QueryBuilder.selectFrom(tablename).all.build
     val resultSet: ResultSet       = executeStatement(statement)
     deSerialiseSelect(resultSet)
       .filter(v => v.id.equals(video_id))
