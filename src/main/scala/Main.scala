@@ -1,7 +1,7 @@
 import akka.http.scaladsl.Http
 import config.AppConfig._
 import repo.initDB
-import repo.initDB.addSampleData
+//import repo.initDB.addSampleData
 import route.ApiRoutes
 import utils.Logging
 
@@ -17,7 +17,7 @@ object Main extends App with ApiRoutes with Logging {
     .onComplete {
       case Success(_)  =>
         logger.info(s"App running (${appConfig.http.hostname}:${appConfig.http.port})")
-        addSampleData()
+//        addSampleData()
       case Failure(ex) => logger.error(s"App failed to start:\n${ex.getMessage}")
     }
 }

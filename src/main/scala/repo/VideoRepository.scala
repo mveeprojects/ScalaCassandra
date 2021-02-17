@@ -6,10 +6,9 @@ import com.datastax.oss.driver.api.core.cql._
 import com.datastax.oss.driver.api.querybuilder.insert.RegularInsert
 import com.datastax.oss.driver.api.querybuilder.{QueryBuilder, SchemaBuilder}
 import config.AppConfig.appConfig.cassandra._
-import model.Video
+import model.VideoDBEntry
 import utils.Logging
 
-import java.util.UUID
 import scala.jdk.CollectionConverters.IterableHasAsScala
 
 class VideoRepository(session: CqlSession) extends Logging {
@@ -18,47 +17,46 @@ class VideoRepository(session: CqlSession) extends Logging {
     val statement: SimpleStatement = SchemaBuilder
       .createTable(tablename)
       .ifNotExists
-      .withPartitionKey("video_id", DataTypes.UUID)
+      .withPartitionKey("user_id", DataTypes.TEXT)
+      .withColumn("video_id", DataTypes.TEXT)
       .withColumn("title", DataTypes.TEXT)
       .withColumn("creation_date", DataTypes.TIMESTAMP)
       .build
     executeStatement(statement)
   }
 
-  def insertVideo(video: Video): UUID = {
+  def insertVideo(video: VideoDBEntry): ResultSet = {
     val insertInto: RegularInsert = QueryBuilder
       .insertInto(tablename)
+      .value("user_id", QueryBuilder.bindMarker())
       .value("video_id", QueryBuilder.bindMarker())
       .value("title", QueryBuilder.bindMarker())
       .value("creation_date", QueryBuilder.bindMarker())
     val preparedStatement: PreparedStatement = session.prepare(insertInto.build)
     val statement: BoundStatement = preparedStatement
       .bind()
-      .setUuid(0, video.id)
-      .setString(1, video.title)
-      .setInstant(2, video.creationDate)
+      .setString(0, video.userId)
+      .setString(1, video.videoId)
+      .setString(2, video.title)
+      .setInstant(3, video.creationDate)
     executeStatement(statement)
-    video.id
   }
 
-  def selectAll: List[Video] = {
+  def selectAllForUser(userId: String): List[VideoDBEntry] = {
     val statement: SimpleStatement = QueryBuilder.selectFrom(tablename).all.build
     val resultSet: ResultSet       = executeStatement(statement)
-    deSerialiseSelect(resultSet)
+    deSerialiseSelect(resultSet).filter(_.userId.equals(userId))
   }
 
-  def selectOne(video_id: UUID): Video = {
-    val statement: SimpleStatement = QueryBuilder.selectFrom(tablename).all.build
-    val resultSet: ResultSet       = executeStatement(statement)
-    deSerialiseSelect(resultSet)
-      .filter(v => v.id.equals(video_id))
-      .head
-  }
+  def selectFirstNForUser(userId: String, numberOfRecords: Int): List[VideoDBEntry] =
+    selectAllForUser(userId)
+      .take(numberOfRecords)
 
-  def deSerialiseSelect(resultSet: ResultSet): List[Video] = resultSet
+  def deSerialiseSelect(resultSet: ResultSet): List[VideoDBEntry] = resultSet
     .map(v =>
-      Video(
-        v.getUuid("video_id"),
+      VideoDBEntry(
+        v.getString("user_id"),
+        v.getString("video_id"),
         v.getString("title"),
         v.getInstant("creation_date")
       )

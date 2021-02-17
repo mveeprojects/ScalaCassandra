@@ -16,9 +16,17 @@ To run the application and Cassandra together via docker-compose, from the root 
 
 ## HTTP Endpoints
 
-At the moment there is only one endpoint, which returns all videos stored in the DB
+### Return all videos for a user
 
-`curl localhost/videos`
+`curl localhost/videos/<userId>`
+
+### Return first N number of videos from a users' list
+
+`curl localhost/videos/<userId>/<n>`
+
+### Add an item to a users' videos
+
+`curl -X PUT localhost/videos/<userId>/<videoId>`
 
 ## Sources
 
