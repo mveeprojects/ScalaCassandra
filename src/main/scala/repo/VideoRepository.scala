@@ -3,6 +3,7 @@ package repo
 import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.`type`.DataTypes
 import com.datastax.oss.driver.api.core.cql._
+import com.datastax.oss.driver.api.querybuilder.QueryBuilder.literal
 import com.datastax.oss.driver.api.querybuilder.insert.RegularInsert
 import com.datastax.oss.driver.api.querybuilder.{QueryBuilder, SchemaBuilder}
 import config.AppConfig.appConfig.cassandra._
@@ -40,6 +41,15 @@ class VideoRepository(session: CqlSession) extends Logging {
       .setString(2, video.title)
       .setInstant(3, video.creationDate)
     executeStatement(statement)
+  }
+
+  def deleteVideo(userId: String, videoId: String): Unit = {
+    val deleteFrom = QueryBuilder
+      .deleteFrom(tablename)
+      .whereColumn("user_id").isEqualTo(literal(userId))
+      .ifColumn("video_id").isEqualTo(literal(videoId))
+      .build()
+    executeStatement(deleteFrom)
   }
 
   def selectAllForUser(userId: String): List[VideoDBEntry] = {

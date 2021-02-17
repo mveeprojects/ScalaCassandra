@@ -12,4 +12,6 @@ object BackendServices {
   def retrieveNVideos(userId: String, n: Int): JsValue = videoRepository.selectFirstNForUser(userId, n).toJson
   def addRecord(userId: String, videoId: String): Unit =
     videoRepository.insertVideo(VideoDBEntry(userId, videoId, "video title", Instant.now()))
+  def deleteRecord(userId: String, videoId: String): Unit =
+    videoRepository.deleteVideo(userId, videoId)
 }

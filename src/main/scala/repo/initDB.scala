@@ -3,12 +3,7 @@ package repo
 import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.cql.ResultSet
 import config.AppConfig.appConfig.cassandra._
-import model.VideoDBEntry
 import utils.Logging
-
-import java.time.Instant
-import java.time.temporal.ChronoUnit
-import java.util.UUID
 
 object initDB extends Logging {
 
@@ -29,23 +24,4 @@ object initDB extends Logging {
     keyspaceRepository.useKeyspace(keyspace)
     videoRepository.createTableIfNotExists
   }
-
-//  def addSampleData(): Unit = {
-//    videoRepository.insertVideo(
-//      VideoDBEntry(
-//        "1234",
-//        UUID.fromString("12345678-1234-1234-1234-123456789012"),
-//        "Video Title 1",
-//        Instant.now
-//      )
-//    )
-//    videoRepository.insertVideo(
-//      VideoDBEntry(
-//        "5678",
-//        UUID.fromString("12345678-1234-1234-1234-123456789013"),
-//        "Video Title 2",
-//        Instant.now.minus(1, ChronoUnit.DAYS)
-//      )
-//    )
-//  }
 }
