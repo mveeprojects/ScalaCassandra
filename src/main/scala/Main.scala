@@ -14,7 +14,7 @@ object Main extends App with ApiRoutes with Logging {
     .newServerAt(appConfig.http.hostname, appConfig.http.port)
     .bindFlow(route)
     .onComplete {
-      case Success(_)  =>
+      case Success(_) =>
         logger.info(s"App running (${appConfig.http.hostname}:${appConfig.http.port})")
       case Failure(ex) => logger.error(s"App failed to start:\n${ex.getMessage}")
     }
