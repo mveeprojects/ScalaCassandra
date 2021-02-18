@@ -10,7 +10,7 @@ class VideoRepository {
 
   def selectAllForUser(userId: String): Future[List[Video]] =
     db.run(quote {
-      query[Video].filter(v => v.userId == lift(userId))
+      query[Video].filter(_.userId.equals(lift(userId)))
     })
 
   def selectFirstNForUser(userId: String, numberOfRecords: Int): Future[List[Video]] =
