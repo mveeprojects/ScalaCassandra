@@ -28,8 +28,12 @@ following `./sbt dockerComposeUp`.
 ### Add an item to a users' videos
 
 `curl -X PUT localhost/videos/<userId>/<videoId>`
+ 
+### Remove an item from a users' videos
 
-## CQLSH
+`curl -X DELETE localhost/videos/<userId>/<videoId>`
+
+## Cqlsh
 
 ### To access the command line (`cqlsh`) via docker
 
