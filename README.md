@@ -28,6 +28,10 @@ following `./sbt dockerComposeUp`.
 ### Add an item to a users' videos
 
 `curl -X PUT localhost/videos/<userId>/<videoId>`
+ 
+### Remove an item from a users' videos
+
+`curl -X DELETE localhost/videos/<userId>/<videoId>`
 
 ## Cqlsh
 
