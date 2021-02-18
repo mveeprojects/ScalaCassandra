@@ -29,7 +29,7 @@ following `./sbt dockerComposeUp`.
 
 `curl -X PUT localhost/videos/<userId>/<videoId>`
 
-## CQLSH
+## Cqlsh
 
 ### To access the command line (`cqlsh`) via docker
 
