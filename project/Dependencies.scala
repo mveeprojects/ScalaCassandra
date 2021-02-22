@@ -9,6 +9,7 @@ object Dependencies {
     val pureconfigVersion = "0.14.0"
     val cassandraDriver   = "4.9.0"
     val quill             = "3.6.1"
+    val scalaTestVersion  = "3.2.2"
   }
 
   import Versions._
@@ -32,5 +33,9 @@ object Dependencies {
 
   val configDependencies = Seq(
     "com.github.pureconfig" %% "pureconfig" % pureconfigVersion
+  )
+
+  val testDependencies = Seq(
+    "org.scalatest" %% "scalatest" % scalaTestVersion % Test
   )
 }

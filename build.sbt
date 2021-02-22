@@ -10,7 +10,8 @@ libraryDependencies ++= (
   cassandraDependencies ++
     akkaDependencies ++
     loggingDependencies ++
-    configDependencies
+    configDependencies ++
+    testDependencies
 )
 
 enablePlugins(JavaAppPackaging, DockerComposePlugin)

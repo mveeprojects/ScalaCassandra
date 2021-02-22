@@ -4,22 +4,22 @@ import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives.{complete, get, path, _}
 import akka.http.scaladsl.server.Route
 import config.AppConfig._
+import model.VideoProtocol._
 import service.BackendServices._
-import service.MyProtocol._
-import spray.json.enrichAny
+import spray.json._
 
 trait ApiRoutes {
   private val basePath = "videos" / Segment
   val route: Route = concat(
     get {
       path(basePath) { userId =>
-        val result = retrieveAllVideos(userId).map(_.toJson.toString)
+        val result = retrieveAllVideos(userId).map(_.toJson)
         complete(StatusCodes.OK, result)
       }
     },
     get {
       path(basePath / Segment) { (userId, numOfRecords) =>
-        val result = retrieveNVideos(userId, numOfRecords.toInt).map(_.toJson.toString)
+        val result = retrieveNVideos(userId, numOfRecords.toInt).map(_.toJson)
         complete(StatusCodes.OK, result)
       }
     },
