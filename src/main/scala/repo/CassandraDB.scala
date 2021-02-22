@@ -11,7 +11,7 @@ import utils.Logging
 
 import scala.util.{Failure, Success, Try}
 
-object initDB extends Logging {
+object CassandraDB extends Logging {
 
   lazy val session: CqlSession         = openDBInitSession(host, port, datacentre)
   val videoRepository: VideoRepository = new VideoRepository()
