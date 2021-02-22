@@ -12,6 +12,7 @@ object DBConfig extends Logging {
 
   // the Cluster required by Quill is a class from the legacy Datastax driver (3.7.2, July 2019)
   // https://mvnrepository.com/artifact/com.datastax.cassandra/cassandra-driver-core/3.7.2
+  // https://github.com/getquill/quill/issues/2090
   private val quillCluster = Cluster
     .builder()
     .addContactPoint(host)
