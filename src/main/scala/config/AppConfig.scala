@@ -3,12 +3,12 @@ package config
 import pureconfig.ConfigSource
 import pureconfig.generic.auto._
 
-object AppConfig extends ActorSystemConfig with DBConfig {
+object AppConfig extends ActorSystemConfig {
 
   case class HttpConfig(hostname: String, port: Int)
 
   case class CassandraConfig(
-      node: String,
+      host: String,
       port: Int,
       datacentre: String,
       keyspace: String,

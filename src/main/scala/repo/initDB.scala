@@ -5,26 +5,36 @@ import com.datastax.oss.driver.api.core.cql.{ResultSet, SimpleStatement}
 import com.datastax.oss.driver.api.core.{CqlIdentifier, CqlSession}
 import com.datastax.oss.driver.api.querybuilder.SchemaBuilder
 import com.datastax.oss.driver.api.querybuilder.schema.CreateKeyspace
-import config.AppConfig._
 import config.AppConfig.appConfig.cassandra._
+import config.DBConfig.{closeDBInitSession, openDBInitSession}
 import utils.Logging
+
+import scala.util.{Failure, Success, Try}
 
 object initDB extends Logging {
 
-  lazy val session: CqlSession              = setupSession(node, port, datacentre)
-  lazy val videoRepository: VideoRepository = new VideoRepository()
+  lazy val session: CqlSession         = openDBInitSession(host, port, datacentre)
+  val videoRepository: VideoRepository = new VideoRepository()
 
-  def init: ResultSet = {
+  def init(): Unit = {
     lingerSeconds match {
       case Some(s) =>
         logger.info(s"Waiting $s seconds for Cassandra to get itself together.")
         Thread.sleep(s * 1000)
-        logger.info("Ready or not, here I come.")
-      case None => logger.info("Ready or not, here I come.")
     }
-    createKeyspaceIfNotExists()
-    useKeyspace()
-    createTableIfNotExists
+    logger.info("Ready or not, here I come.")
+    Try {
+      createKeyspaceIfNotExists()
+      useKeyspace()
+      createTableIfNotExists
+    } match {
+      case Success(_) =>
+        logger.info("DB initialisation completed successfully.")
+        closeDBInitSession(session)
+      case Failure(exception) =>
+        logger.error(s"Exception thrown during DB initialisation => ${exception.getMessage}")
+        closeDBInitSession(session)
+    }
   }
 
   def createKeyspaceIfNotExists(): Unit = {
