@@ -1,3 +1,4 @@
+import Aliases.customAliases
 import Dependencies._
 
 name := "ScalaCassandra"
@@ -14,6 +15,8 @@ libraryDependencies ++= (
     testDependencies
 )
 
-enablePlugins(JavaAppPackaging, DockerComposePlugin)
+lazy val root = Project("ScalaCassandra", file("."))
+  .settings(customAliases)
+  .enablePlugins(JavaAppPackaging, DockerComposePlugin)
 
 dockerImageCreationTask := (publishLocal in Docker).value

@@ -32,4 +32,8 @@ object DBUtils {
         .filter(_.videoId.equals(lift(videoId)))
         .delete
     })
+
+  def closeTestCassandraSession(): Unit = {
+    testQuillDB.close()
+  }
 }

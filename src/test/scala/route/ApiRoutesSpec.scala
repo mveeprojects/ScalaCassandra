@@ -3,7 +3,7 @@ package route
 import akka.http.scaladsl.model.StatusCodes
 import config.TestConfig.testConf._
 import model.Video
-import org.scalatest.BeforeAndAfterEach
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.concurrent.Eventually
 import org.scalatest.concurrent.ScalaFutures.convertScalaFuture
 import org.scalatest.freespec.AnyFreeSpec
@@ -13,7 +13,7 @@ import utils.HttpUtils._
 
 import scala.concurrent.Future
 
-class ApiRoutesSpec extends AnyFreeSpec with Matchers with Eventually with BeforeAndAfterEach {
+class ApiRoutesSpec extends AnyFreeSpec with Matchers with Eventually with BeforeAndAfterEach with BeforeAndAfterAll {
 
   override implicit val patienceConfig: PatienceConfig =
     PatienceConfig(patience.timeout, patience.interval)
@@ -21,7 +21,11 @@ class ApiRoutesSpec extends AnyFreeSpec with Matchers with Eventually with Befor
   private val testUserId  = "userA"
   private val testVideoId = "videoA"
 
+  override def beforeAll(): Unit = Thread.sleep(45000)
+
   override def beforeEach(): Unit = removeVideoFromDB(testUserId, testVideoId)
+
+  override def afterAll(): Unit = closeTestCassandraSession()
 
   "Api routes" - {
     "when GET is called for a userId that does not exist" - {
