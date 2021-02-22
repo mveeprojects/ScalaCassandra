@@ -14,12 +14,24 @@ object HttpUtils {
   implicit val actorSystem: ActorSystem = ActorSystem()
   implicit val ec: ExecutionContext     = actorSystem.dispatcher
 
+  private val baseUrl = "http://localhost:80/videos"
+
   def fireGetRequest(userId: String): Future[Seq[Video]] =
     Http()
-      .singleRequest(HttpRequest(HttpMethods.GET, s"http://localhost:80/videos/$userId"))
+      .singleRequest(HttpRequest(HttpMethods.GET, s"$baseUrl/$userId"))
       .flatMap(response =>
         Unmarshal(response).to[Seq[Video]].collect { case vids =>
           vids
         }
       )
+
+  def firePutRequest(userId: String, videoId: String): Future[StatusCode] =
+    Http()
+      .singleRequest(HttpRequest(HttpMethods.PUT, s"$baseUrl/$userId/$videoId"))
+      .map(_.status)
+
+  def fireDeleteRequest(userId: String, videoId: String): Future[StatusCode] =
+    Http()
+      .singleRequest(HttpRequest(HttpMethods.DELETE, s"$baseUrl/$userId/$videoId"))
+      .map(_.status)
 }
