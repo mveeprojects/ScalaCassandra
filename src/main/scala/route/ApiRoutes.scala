@@ -34,6 +34,11 @@ trait ApiRoutes {
         deleteRecord(userId, videoId)
         complete(StatusCodes.NoContent)
       }
+    },
+    get {
+      path("readiness") {
+        complete(StatusCodes.Accepted)
+      }
     }
   )
 }

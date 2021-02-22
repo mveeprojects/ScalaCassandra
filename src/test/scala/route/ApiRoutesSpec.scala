@@ -3,17 +3,18 @@ package route
 import akka.http.scaladsl.model.StatusCodes
 import config.TestConfig.testConf._
 import model.Video
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.concurrent.Eventually
 import org.scalatest.concurrent.ScalaFutures.convertScalaFuture
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import utils.DBUtils._
 import utils.HttpUtils._
+import utils.Logging
 
 import scala.concurrent.Future
 
-class ApiRoutesSpec extends AnyFreeSpec with Matchers with Eventually with BeforeAndAfterEach with BeforeAndAfterAll {
+class ApiRoutesSpec extends AnyFreeSpec with Matchers with Eventually with BeforeAndAfterEach with BeforeAndAfterAll with Logging {
 
   override implicit val patienceConfig: PatienceConfig =
     PatienceConfig(patience.timeout, patience.interval)
@@ -21,7 +22,15 @@ class ApiRoutesSpec extends AnyFreeSpec with Matchers with Eventually with Befor
   private val testUserId  = "userA"
   private val testVideoId = "videoA"
 
-  override def beforeAll(): Unit = Thread.sleep(45000)
+  override def beforeAll(): Unit = {
+    logger.info("Waiting for app to become ready.")
+    eventually {
+      val testAppReadiness = fireReadinessRequest()
+      testAppReadiness.futureValue shouldBe StatusCodes.Accepted
+    }
+    logger.info("App ready to receive requests.")
+  }
+
 
   override def beforeEach(): Unit = removeVideoFromDB(testUserId, testVideoId)
 
@@ -55,7 +64,7 @@ class ApiRoutesSpec extends AnyFreeSpec with Matchers with Eventually with Befor
     "after calling DELETE for a video that exists in a users' list" - {
       "calling GET should return a list of videos without the DELETE'd video" in {
         insertVideoIntoDB(testUserId, testVideoId)
-        eventually{
+        eventually {
           val deleteResult = fireDeleteRequest(testUserId, testVideoId)
           deleteResult.futureValue shouldBe StatusCodes.NoContent
 

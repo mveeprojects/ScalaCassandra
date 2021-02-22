@@ -14,11 +14,17 @@ object HttpUtils {
   implicit val actorSystem: ActorSystem = ActorSystem()
   implicit val ec: ExecutionContext     = actorSystem.dispatcher
 
-  private val baseUrl = "http://localhost:80/videos"
+  private val baseUrl    = "http://localhost:80"
+  private val apiBaseUrl = s"$baseUrl/videos"
+
+  def fireReadinessRequest(): Future[StatusCode] =
+    Http()
+      .singleRequest(HttpRequest(HttpMethods.GET, s"$baseUrl/readiness"))
+      .map(_.status)
 
   def fireGetRequest(userId: String): Future[Seq[Video]] =
     Http()
-      .singleRequest(HttpRequest(HttpMethods.GET, s"$baseUrl/$userId"))
+      .singleRequest(HttpRequest(HttpMethods.GET, s"$apiBaseUrl/$userId"))
       .flatMap(response =>
         Unmarshal(response).to[Seq[Video]].collect { case vids =>
           vids
@@ -27,11 +33,11 @@ object HttpUtils {
 
   def firePutRequest(userId: String, videoId: String): Future[StatusCode] =
     Http()
-      .singleRequest(HttpRequest(HttpMethods.PUT, s"$baseUrl/$userId/$videoId"))
+      .singleRequest(HttpRequest(HttpMethods.PUT, s"$apiBaseUrl/$userId/$videoId"))
       .map(_.status)
 
   def fireDeleteRequest(userId: String, videoId: String): Future[StatusCode] =
     Http()
-      .singleRequest(HttpRequest(HttpMethods.DELETE, s"$baseUrl/$userId/$videoId"))
+      .singleRequest(HttpRequest(HttpMethods.DELETE, s"$apiBaseUrl/$userId/$videoId"))
       .map(_.status)
 }
