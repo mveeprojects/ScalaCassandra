@@ -15,6 +15,12 @@ following `./sbt dockerComposeUp`.
    Cassandra to become ready.
 2. Start the app up in IntelliJ.
 
+## Running all tests
+
+The following sbt command will start the containers, run the tests (with a readiness check waiting for the app to become ready), and then stop and remove all containers.
+
+`./sbt runAllTests`
+
 ## HTTP Endpoints
 
 ### Return all videos for a user
