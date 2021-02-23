@@ -15,9 +15,9 @@ following `./sbt dockerComposeUp`.
    Cassandra to become ready.
 2. Start the app up in IntelliJ.
 
-## Running all tests
+## Running all tests via docker
 
-The following sbt command will start the containers, run the tests (with a readiness check waiting for the app to become ready), and then stop and remove all containers.
+The following sbt command will start the required docker containers, run the tests (with a readiness check waiting for the app to become ready), and then stop and remove all containers.
 
 `./sbt runAllTests`
 
@@ -38,6 +38,10 @@ The following sbt command will start the containers, run the tests (with a readi
 ### Remove an item from a users' videos
 
 `curl -X DELETE localhost/videos/<userId>/<videoId>`
+
+## Metrics
+
+Metrics surfaced by Kamon can be seen at `http://localhost:9095/metrics`
 
 ## Cqlsh
 
@@ -70,3 +74,4 @@ The following sbt command will start the containers, run the tests (with a readi
 * https://docs.datastax.com/en/developer/java-driver/3.6/manual/metrics/#metrics-4-compatibility
     * (JMX issue) - justification for creating a cluster using `.withoutJMXReporting`
 * https://getquill.io/
+* https://kamon.io/docs/latest/guides/how-to/start-with-the-kanela-agent/#using-sbt-native-packager

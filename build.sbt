@@ -1,4 +1,5 @@
 import Aliases.customAliases
+import Monitoring.kamonSettings
 import Dependencies._
 
 name := "ScalaCassandra"
@@ -11,12 +12,14 @@ libraryDependencies ++= (
   cassandraDependencies ++
     akkaDependencies ++
     loggingDependencies ++
+    monitoringDependencies ++
     configDependencies ++
     testDependencies
 )
 
 lazy val root = Project("ScalaCassandra", file("."))
   .settings(customAliases)
-  .enablePlugins(JavaAppPackaging, DockerComposePlugin)
+  .settings(kamonSettings)
+  .enablePlugins(JavaAppPackaging, DockerComposePlugin, JavaAgent)
 
 dockerImageCreationTask := (publishLocal in Docker).value

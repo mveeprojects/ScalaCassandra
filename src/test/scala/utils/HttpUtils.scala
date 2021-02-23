@@ -17,11 +17,6 @@ object HttpUtils {
   private val baseUrl    = "http://localhost:80"
   private val apiBaseUrl = s"$baseUrl/videos"
 
-  def fireReadinessRequest(): Future[StatusCode] =
-    Http()
-      .singleRequest(HttpRequest(HttpMethods.GET, s"$baseUrl/readiness"))
-      .map(_.status)
-
   def fireGetRequest(userId: String): Future[Seq[Video]] =
     Http()
       .singleRequest(HttpRequest(HttpMethods.GET, s"$apiBaseUrl/$userId"))

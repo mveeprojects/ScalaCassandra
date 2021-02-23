@@ -1,15 +1,25 @@
-version: '3.4'
+version: '3.8'
 services:
+
+  startup-smoke-test:
+    image: curlimages/curl
+    depends_on:
+      scalacassandra:
+        condition: service_healthy
 
   scalacassandra:
     image: scalacassandra:<localBuild>
     ports:
       - 80:80
+      - 9095:9095
     environment:
       cassandra_host: cassandra
       startup_linger_seconds: 30
+    healthcheck:
+      test: "curl -o /dev/null -s -w '%{http_code}' http://localhost:80/readiness | grep 202"
     depends_on:
-      - cassandra
+      cassandra:
+        condition: service_healthy
 
   cassandra:
     image: cassandra:3.11.9
