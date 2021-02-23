@@ -41,7 +41,7 @@ The following sbt command will start the required docker containers, run the tes
 
 ## Metrics
 
-Metrics surfaced by Kamon can be seen at `http://localhost:9095/metrics`
+Metrics surfaced by Kamon are exposed here -> `http://localhost:9095/metrics`
 
 ## Cqlsh
 
@@ -75,3 +75,4 @@ Metrics surfaced by Kamon can be seen at `http://localhost:9095/metrics`
     * (JMX issue) - justification for creating a cluster using `.withoutJMXReporting`
 * https://getquill.io/
 * https://kamon.io/docs/latest/guides/how-to/start-with-the-kanela-agent/#using-sbt-native-packager
+    * https://bintray.com/kamon-io/releases/kanela/1.0.7
