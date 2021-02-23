@@ -25,11 +25,10 @@ object DBUtils {
       query[Video].insert(lift(Video(userId, videoId, "video title", Instant.now())))
     })
 
-  def removeVideoFromDB(userId: String, videoId: String): Future[Unit] =
+  def removeVideosFromDB(userId: String): Future[Unit] =
     testQuillDB.run(quote {
       query[Video]
         .filter(_.userId.equals(lift(userId)))
-        .filter(_.videoId.equals(lift(videoId)))
         .delete
     })
 

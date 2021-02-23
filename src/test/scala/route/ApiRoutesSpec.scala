@@ -19,8 +19,38 @@ class ApiRoutesSpec extends FuncSpecBase {
     "when GET is called for a userId that does not exist" - {
       "should return an empty list of videos" in {
         eventually {
-          val getResult: Future[Seq[Video]] = fireGetRequest("unknownuser")
+          val getResult: Future[Seq[Video]] = fireGetRequest(testUserId)
           getResult.futureValue shouldBe Seq.empty[Video]
+        }
+      }
+    }
+
+    "when GET is called for a userId that already exists" - {
+      "should return a list of videos for that user" in {
+        insertVideoIntoDB(testUserId, testVideoId)
+        eventually {
+          val getResult: Future[Seq[Video]] = fireGetRequest(testUserId)
+          val videos: Seq[Video]            = getResult.futureValue
+
+          videos.length shouldBe 1
+          videos.head.userId shouldBe testUserId
+          videos.head.videoId shouldBe testVideoId
+        }
+      }
+    }
+
+    "when GET is called (for a specific N number of videos) for a userId that already exists" - {
+      "should return a list containing the first N number of videos for that user" in {
+        insertVideoIntoDB(testUserId, testVideoId)
+        insertVideoIntoDB(testUserId, "videoB")
+        eventually {
+          val n = "1"
+          val getResult: Future[Seq[Video]] = fireGetRequestWithLimit(testUserId, n)
+          val videos: Seq[Video]            = getResult.futureValue
+
+          videos.length shouldBe 1
+          videos.head.userId shouldBe testUserId
+          videos.head.videoId shouldBe testVideoId
         }
       }
     }

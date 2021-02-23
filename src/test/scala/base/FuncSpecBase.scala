@@ -4,7 +4,7 @@ import org.scalatest.concurrent.Eventually
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
-import utils.DBUtils.{closeTestCassandraSession, removeVideoFromDB}
+import utils.DBUtils.{closeTestCassandraSession, removeVideosFromDB}
 import utils.Logging
 
 trait FuncSpecBase
@@ -19,7 +19,7 @@ trait FuncSpecBase
   val testVideoId = "videoA"
 
   override def beforeEach(): Unit =
-    removeVideoFromDB(testUserId, testVideoId)
+    removeVideosFromDB(testUserId)
 
   override def afterAll(): Unit =
     closeTestCassandraSession()

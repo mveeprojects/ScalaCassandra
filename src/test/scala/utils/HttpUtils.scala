@@ -26,6 +26,15 @@ object HttpUtils {
         }
       )
 
+  def fireGetRequestWithLimit(userId: String, n: String): Future[Seq[Video]] =
+    Http()
+      .singleRequest(HttpRequest(HttpMethods.GET, s"$apiBaseUrl/$userId/$n"))
+      .flatMap(response =>
+        Unmarshal(response).to[Seq[Video]].collect { case vids =>
+          vids
+        }
+      )
+
   def firePutRequest(userId: String, videoId: String): Future[StatusCode] =
     Http()
       .singleRequest(HttpRequest(HttpMethods.PUT, s"$apiBaseUrl/$userId/$videoId"))
