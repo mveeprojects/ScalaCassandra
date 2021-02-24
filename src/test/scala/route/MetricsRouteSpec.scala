@@ -1,8 +1,10 @@
+package route
+
 import base.FuncSpecBase
 import config.TestConfig.testConf._
 import utils.HttpUtils.getMetricsAsList
 
-class MetricsSpec extends FuncSpecBase {
+class MetricsRouteSpec extends FuncSpecBase {
 
   override implicit val patienceConfig: PatienceConfig =
     PatienceConfig(patience.timeout, patience.interval)
