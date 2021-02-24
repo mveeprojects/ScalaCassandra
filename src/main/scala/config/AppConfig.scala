@@ -15,7 +15,6 @@ object AppConfig extends ActorSystemConfig {
       replicas: Int,
       tablename: String,
       preparedstatementcache: Int,
-      lingerSeconds: Option[Int]
   )
 
   case class Config(http: HttpConfig, cassandra: CassandraConfig)
