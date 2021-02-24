@@ -43,6 +43,12 @@ The following sbt command will start the required docker containers, run the tes
 
 Metrics surfaced by Kamon are exposed here -> `http://localhost:9095/metrics`
 
+### Custom Metrics
+
+`cassandra_reachable`
+  * value of 1 represents "true", cassandra is reachable, this is the default value on startup
+  * code to be added to set this to 0 ("false") in the event cassandra is unreachable 
+
 ## Cqlsh
 
 ### To access the command line (`cqlsh`) via docker

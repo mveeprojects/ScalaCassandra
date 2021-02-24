@@ -8,6 +8,7 @@ import com.datastax.oss.driver.api.querybuilder.schema.CreateKeyspace
 import config.AppConfig.appConfig.cassandra._
 import config.DBConfig.{closeDBInitSession, openDBInitSession}
 import utils.Logging
+import config.CustomMetrics.cassandraReachable
 
 import scala.util.{Failure, Success, Try}
 
@@ -24,6 +25,7 @@ object CassandraDB extends Logging {
     } match {
       case Success(_) =>
         logger.info("DB initialisation completed successfully.")
+        cassandraReachable.update(1)
         closeDBInitSession(session)
       case Failure(exception) =>
         logger.error(s"Exception thrown during DB initialisation => ${exception.getMessage}")
