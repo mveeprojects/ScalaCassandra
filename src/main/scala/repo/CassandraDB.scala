@@ -17,12 +17,7 @@ object CassandraDB extends Logging {
   val videoRepository: VideoRepository = new VideoRepository()
 
   def init(): Unit = {
-    lingerSeconds match {
-      case Some(s) =>
-        logger.info(s"Waiting $s seconds for Cassandra to get itself together.")
-        Thread.sleep(s * 1000)
-    }
-    logger.info("Ready or not, here I come.")
+    logger.info("Configuring Keyspace and Schema in Cassandra...")
     Try {
       createKeyspaceIfNotExists()
       useKeyspace()
