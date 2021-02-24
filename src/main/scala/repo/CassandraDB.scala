@@ -13,8 +13,7 @@ import scala.util.{Failure, Success, Try}
 
 object CassandraDB extends Logging {
 
-  lazy val session: CqlSession         = openDBInitSession(host, port, datacentre)
-  val videoRepository: VideoRepository = new VideoRepository()
+  private lazy val session: CqlSession = openDBInitSession(host, port, datacentre)
 
   def init(): Unit = {
     logger.info("Configuring Keyspace and Schema in Cassandra...")
@@ -32,7 +31,7 @@ object CassandraDB extends Logging {
     }
   }
 
-  def createKeyspaceIfNotExists(): Unit = {
+  private def createKeyspaceIfNotExists(): Unit = {
     val cks: CreateKeyspace = SchemaBuilder
       .createKeyspace(keyspace)
       .ifNotExists
@@ -40,7 +39,7 @@ object CassandraDB extends Logging {
     session.execute(cks.build)
   }
 
-  def useKeyspace(): ResultSet =
+  private def useKeyspace(): ResultSet =
     session.execute("USE " + CqlIdentifier.fromCql(keyspace))
 
   private def createTableIfNotExists: ResultSet = {
