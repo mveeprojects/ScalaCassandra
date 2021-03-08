@@ -15,7 +15,7 @@ object HttpUtils {
   implicit val actorSystem: ActorSystem = ActorSystem()
   implicit val ec: ExecutionContext     = actorSystem.dispatcher
 
-  private val apiPort     = 80
+  private val apiPort     = 8080
   private val metricsPort = 9095
 
   private val baseUrl    = "http://localhost"
