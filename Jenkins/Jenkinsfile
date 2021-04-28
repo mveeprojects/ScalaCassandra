@@ -3,27 +3,17 @@ pipeline {
 
     stages {
 
-        stage('Compile') {
-            steps {
-                sh '''#!/bin/bash
-                	echo "Compiling code..."
-                	./sbt compile
-                	echo "Done compiling"
-         		'''
-            }
-        }
-
-        stage('Test') {
+        stage('Run all tests') {
             steps {
                 sh '''#!/bin/bash
                 	echo "Testing code..."
-                	./sbt test
+                	./sbt runAllTests
                 	echo "Done testing"
          		'''
             }
         }
 
-        stage('Create Docker Image and Run') {
+        stage('Deploy') {
             steps {
                 sh '''#!/bin/bash
                     echo "Redeploying the app ..."

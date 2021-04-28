@@ -12,7 +12,7 @@ object DBUtils {
 
   private lazy val testQuillCluster = Cluster
     .builder()
-    .addContactPoint("localhost")
+    .addContactPoint("cassandra")
     .withoutJMXReporting
     .build()
 
