@@ -7,7 +7,7 @@ pipeline {
             steps {
                 sh '''#!/bin/bash
                 	echo "Testing code..."
-                	./sbt runAllTests
+                	sudo ./sbt runAllTests
                 	echo "Done testing"
          		'''
             }
@@ -17,7 +17,7 @@ pipeline {
             steps {
                 sh '''#!/bin/bash
                     echo "Redeploying the app ..."
-                    ./sbt redeployApp
+                    sudo ./sbt redeployApp
                     echo "App has been deployed"
                 '''
             }
