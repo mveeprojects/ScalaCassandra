@@ -25,19 +25,19 @@ The following sbt command will start the required docker containers, run the tes
 
 ### Return all videos for a user
 
-`curl localhost/videos/<userId>`
+`curl localhost:8080/videos/<userId>`
 
 ### Return first N number of videos from a users' list
 
-`curl localhost/videos/<userId>/<n>`
+`curl localhost:8080/videos/<userId>/<n>`
 
 ### Add an item to a users' videos
 
-`curl -X PUT localhost/videos/<userId>/<videoId>`
+`curl -X PUT localhost:8080/videos/<userId>/<videoId>`
  
 ### Remove an item from a users' videos
 
-`curl -X DELETE localhost/videos/<userId>/<videoId>`
+`curl -X DELETE localhost:8080/videos/<userId>/<videoId>`
 
 ## Metrics
 
