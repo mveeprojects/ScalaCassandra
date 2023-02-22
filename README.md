@@ -73,12 +73,11 @@ Metrics surfaced by Kamon are exposed here -> `http://localhost:9095/metrics`
 
 ## Sources
 
-* https://docs.datastax.com/en/developer/java-driver/4.9
+* https://docs.datastax.com/en/developer/java-driver/4.14
 * https://www.baeldung.com/cassandra-datastax-java-driver
     * https://github.com/eugenp/tutorials/tree/master/persistence-modules/java-cassandra/src/main/java/com/baeldung/datastax/cassandra
 * https://github.com/Tapad/sbt-docker-compose
 * https://docs.datastax.com/en/developer/java-driver/3.6/manual/metrics/#metrics-4-compatibility
     * (JMX issue) - justification for creating a cluster using `.withoutJMXReporting`
-* https://getquill.io/
 * https://kamon.io/docs/latest/guides/how-to/start-with-the-kanela-agent/#using-sbt-native-packager
     * https://bintray.com/kamon-io/releases/kanela/1.0.7

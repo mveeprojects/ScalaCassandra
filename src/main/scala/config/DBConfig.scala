@@ -1,34 +1,22 @@
 package config
 
-import com.datastax.driver.core.Cluster
 import com.datastax.oss.driver.api.core.CqlSession
-import config.AppConfig.appConfig.cassandra._
-import io.getquill.{CamelCase, CassandraAsyncContext}
 import utils.Logging
+import config.AppConfig.appConfig._
 
 import java.net.InetSocketAddress
 
 object DBConfig extends Logging {
 
-  // the Cluster required by Quill is a class from the legacy Datastax driver (3.7.2, July 2019)
-  // https://mvnrepository.com/artifact/com.datastax.cassandra/cassandra-driver-core/3.7.2
-  // https://github.com/getquill/quill/issues/2090
-  private val quillCluster = Cluster
-    .builder()
-    .addContactPoint(host)
-    .withoutJMXReporting
-    .build()
-
-  val quillDB = new CassandraAsyncContext(CamelCase, quillCluster, keyspace, preparedstatementcache)
-
-  def openDBInitSession: (String, Int, String) => CqlSession = (node: String, port: Int, datacentre: String) =>
+  def session: CqlSession = {
     CqlSession.builder
-      .addContactPoint(new InetSocketAddress(node, port))
-      .withLocalDatacenter(datacentre)
+      .addContactPoint(new InetSocketAddress(cassandra.host, cassandra.port))
+      .withLocalDatacenter(cassandra.datacentre)
       .build
+  }
 
-  def closeDBInitSession(session: CqlSession): Unit = {
-    logger.info("Closing DB initialisation session.")
+  def closeSession(session: CqlSession): Unit = {
+    logger.info("Closing DB session.")
     session.close()
   }
 }

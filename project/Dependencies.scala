@@ -7,8 +7,7 @@ object Dependencies {
     val akkaHttp        = "10.2.3"
     val logback         = "1.2.3"
     val pureConfig      = "0.14.0"
-    val cassandraDriver = "4.9.0"
-    val quill           = "3.6.1"
+    val cassandraDriver = "4.15.0"
     val scalaTest       = "3.2.2"
     val kamon           = "2.1.12"
     val kanela          = "1.0.7"
@@ -18,8 +17,7 @@ object Dependencies {
 
   val cassandraDependencies = Seq(
     "com.datastax.oss" % "java-driver-core"          % cassandraDriver,
-    "com.datastax.oss" % "java-driver-query-builder" % cassandraDriver,
-    "io.getquill"     %% "quill-cassandra"           % quill
+    "com.datastax.oss" % "java-driver-query-builder" % cassandraDriver
   )
 
   val akkaDependencies = Seq(
