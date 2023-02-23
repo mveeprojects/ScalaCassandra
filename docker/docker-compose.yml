@@ -21,7 +21,7 @@ services:
         condition: service_healthy
 
   cassandra:
-    image: cassandra:3.11.9
+    image: my_cassandra
     ports:
       - 9042:9042
     healthcheck:

@@ -22,7 +22,7 @@ class VideoRepository {
           row.getString("userid"),
           row.getString("videoid"),
           row.getString("title"),
-          Instant.from(row.getLocalDate("creationdate"))
+          row.getInstant("creationdate")
         )).toList
     }
   }

@@ -1,6 +1,5 @@
 import akka.http.scaladsl.Http
 import config.AppConfig._
-import repo.CassandraDB
 import route.ApiRoutes
 import utils.Logging
 import kamon.Kamon
@@ -9,7 +8,7 @@ import scala.util.{Failure, Success}
 
 object Main extends App with ApiRoutes with Logging {
 
-  CassandraDB.init()
+//  CassandraDB.init()
 
   Http()
     .newServerAt(appConfig.http.hostname, appConfig.http.port)

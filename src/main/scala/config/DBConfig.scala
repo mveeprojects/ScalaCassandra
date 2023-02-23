@@ -8,7 +8,7 @@ import java.net.InetSocketAddress
 
 object DBConfig extends Logging {
 
-  def session: CqlSession = {
+  val session: CqlSession = {
     CqlSession.builder
       .addContactPoint(new InetSocketAddress(cassandra.host, cassandra.port))
       .withLocalDatacenter(cassandra.datacentre)
