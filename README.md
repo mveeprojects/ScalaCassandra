@@ -15,6 +15,11 @@ following `./sbt dockerComposeUp`.
    Cassandra to become ready.
 2. Start the app up in IntelliJ.
 
+### Temporary while working on custom cassandra image (keyspace and table defined)
+
+1. Build the custom cassandra image `docker build ./cassandra -t mycassandra`
+2. Then run everything in the normal way`./sbt dockerComposeUp`
+
 ## Running all tests via docker
 
 The following sbt command will start the required docker containers, run the tests (with a readiness check waiting for the app to become ready), and then stop and remove all containers.
@@ -81,3 +86,5 @@ Metrics surfaced by Kamon are exposed here -> `http://localhost:9095/metrics`
     * (JMX issue) - justification for creating a cluster using `.withoutJMXReporting`
 * https://kamon.io/docs/latest/guides/how-to/start-with-the-kanela-agent/#using-sbt-native-packager
     * https://bintray.com/kamon-io/releases/kanela/1.0.7
+* https://gist.github.com/derlin/0d4c98f7787140805793d6268dae8440
+* https://stackoverflow.com/questions/75688717/create-tables-automatically-in-dockerised-cassandra-4-x

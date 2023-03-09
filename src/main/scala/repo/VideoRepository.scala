@@ -4,9 +4,10 @@ import config.AppConfig._
 import config.DBConfig.session
 import model.Video
 
-import java.time.Instant
+import java.util.UUID
 import scala.concurrent.Future
 import scala.jdk.CollectionConverters._
+import scala.util.Try
 
 class VideoRepository {
 
@@ -19,9 +20,9 @@ class VideoRepository {
       session.execute(preparedStatement)
         .asScala
         .map(row => Video(
-          row.getString("userid"),
+          UUID.fromString(row.getString("userid")),
           row.getString("videoid"),
-          row.getString("title"),
+          Try(row.getString("title")).toOption,
           row.getInstant("creationdate")
         )).toList
     }
@@ -33,9 +34,10 @@ class VideoRepository {
     }
 
   def insertVideoForUser(video: Video): Future[Unit] = {
+    import video._
     val preparedStatement = session
       .prepare(s"INSERT INTO ${appConfig.cassandra.keyspace}.video (userid, videoid, title, creationdate) VALUES (?, ?, ?, ?)")
-      .bind(video.userId, video.videoId, video.title, video.creationDate)
+      .bind(userId.toString, videoId, title.getOrElse("No title provided"), creationDate)
 
     Future {
       session.execute(preparedStatement)
