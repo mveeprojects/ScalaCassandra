@@ -10,4 +10,4 @@ until echo $CQL | cqlsh; do
   sleep 2
 done &
 
-exec /docker-entrypoint.sh
+exec /usr/local/bin/docker-entrypoint.sh
