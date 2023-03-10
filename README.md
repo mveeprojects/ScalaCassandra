@@ -80,11 +80,13 @@ Metrics surfaced by Kamon are exposed here -> `http://localhost:9095/metrics`
 
 * https://docs.datastax.com/en/developer/java-driver/4.14
 * https://www.baeldung.com/cassandra-datastax-java-driver
-    * https://github.com/eugenp/tutorials/tree/master/persistence-modules/java-cassandra/src/main/java/com/baeldung/datastax/cassandra
+  * https://github.com/eugenp/tutorials/tree/master/persistence-modules/java-cassandra/src/main/java/com/baeldung/datastax/cassandra
 * https://github.com/Tapad/sbt-docker-compose
 * https://docs.datastax.com/en/developer/java-driver/3.6/manual/metrics/#metrics-4-compatibility
-    * (JMX issue) - justification for creating a cluster using `.withoutJMXReporting`
+  * (JMX issue) - justification for creating a cluster using `.withoutJMXReporting`
 * https://kamon.io/docs/latest/guides/how-to/start-with-the-kanela-agent/#using-sbt-native-packager
-    * https://bintray.com/kamon-io/releases/kanela/1.0.7
-* https://gist.github.com/derlin/0d4c98f7787140805793d6268dae8440
-* https://stackoverflow.com/questions/75688717/create-tables-automatically-in-dockerised-cassandra-4-x
+  * https://bintray.com/kamon-io/releases/kanela/1.0.7
+* Resources on creating custom Cassandra image
+  * https://www.linkedin.com/pulse/creating-cassandra-keyspace-table-docker-start-up-amon-peter
+  * https://gist.github.com/derlin/0d4c98f7787140805793d6268dae8440
+  * https://stackoverflow.com/questions/75688717/create-tables-automatically-in-dockerised-cassandra-4-x
