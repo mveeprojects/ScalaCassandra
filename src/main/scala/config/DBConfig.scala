@@ -2,16 +2,15 @@ package config
 
 import com.datastax.oss.driver.api.core.CqlSession
 import utils.Logging
-import config.AppConfig.appConfig._
 
 import java.net.InetSocketAddress
 
-object DBConfig extends Logging {
+object DBConfig extends AppConfig with Logging {
 
   val session: CqlSession = {
     CqlSession.builder
-      .addContactPoint(new InetSocketAddress(cassandra.host, cassandra.port))
-      .withLocalDatacenter(cassandra.datacentre)
+      .addContactPoint(new InetSocketAddress(cassandraConfig.cassandra.host, cassandraConfig.cassandra.port))
+      .withLocalDatacenter(cassandraConfig.cassandra.datacentre)
       .build
   }
 

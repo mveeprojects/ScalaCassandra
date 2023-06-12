@@ -1,10 +1,9 @@
 package model
 
 import java.time.Instant
-import java.util.UUID
 
 case class Video(
-    userId: UUID,
+    userId: String,
     videoId: String,
     title: Option[String],
     creationDate: Instant

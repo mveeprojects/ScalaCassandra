@@ -14,6 +14,7 @@ class MetricsRouteSpec extends FuncSpecBase {
       "cassandra_reachable with a value of 1.0" in {
         eventually {
           val getMetricsResult: List[String] = getMetricsAsList
+          println(s"getMetricsResult: $getMetricsResult")
           getMetricsResult should contain("cassandra_reachable 1.0")
         }
       }

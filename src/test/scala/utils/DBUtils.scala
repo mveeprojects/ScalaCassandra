@@ -1,7 +1,6 @@
 package utils
 
 import com.datastax.oss.driver.api.core.CqlSession
-import config.AppConfig.appConfig
 
 import java.net.InetSocketAddress
 import java.time.Instant

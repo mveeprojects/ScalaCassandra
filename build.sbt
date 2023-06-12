@@ -1,6 +1,6 @@
 import Aliases.customAliases
-import Monitoring.kamonSettings
 import Dependencies._
+import Monitoring.kamonSettings
 
 name := "ScalaCassandra"
 
@@ -9,7 +9,8 @@ version := "0.1"
 scalaVersion := "2.13.4"
 
 libraryDependencies ++= (
-  cassandraDependencies ++
+  mvpCommon ++
+    cassandraDependencies ++
     akkaDependencies ++
     loggingDependencies ++
     monitoringDependencies ++

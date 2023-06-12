@@ -15,23 +15,25 @@ object Dependencies {
 
   import Versions._
 
-  val cassandraDependencies = Seq(
+  val mvpCommon: Seq[ModuleID] = Seq("mveeprojects" %% "mvp_common" % "0.1")
+
+  val cassandraDependencies: Seq[ModuleID] = Seq(
     "com.datastax.oss" % "java-driver-core"          % cassandraDriver,
     "com.datastax.oss" % "java-driver-query-builder" % cassandraDriver
   )
 
-  val akkaDependencies = Seq(
+  val akkaDependencies: Seq[ModuleID] = Seq(
     "com.typesafe.akka" %% "akka-http"            % akkaHttp,
     "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttp,
     "com.typesafe.akka" %% "akka-stream"          % akka,
     "com.typesafe.akka" %% "akka-actor"           % akka
   )
 
-  val loggingDependencies = Seq(
+  val loggingDependencies: Seq[ModuleID] = Seq(
     "ch.qos.logback" % "logback-classic" % logback
   )
 
-  val monitoringDependencies = Seq(
+  val monitoringDependencies: Seq[ModuleID] = Seq(
     "io.kamon" %% "kamon-core"           % kamon,
     "io.kamon" %% "kamon-akka-http"      % kamon,
     "io.kamon" %% "kamon-system-metrics" % kamon,
@@ -39,11 +41,11 @@ object Dependencies {
     "io.kamon"  % "kanela-agent"         % kanela
   )
 
-  val configDependencies = Seq(
+  val configDependencies: Seq[ModuleID] = Seq(
     "com.github.pureconfig" %% "pureconfig" % pureConfig
   )
 
-  val testDependencies = Seq(
+  val testDependencies: Seq[ModuleID] = Seq(
     "org.scalatest" %% "scalatest" % scalaTest % Test
   )
 }

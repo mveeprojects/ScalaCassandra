@@ -1,12 +1,6 @@
 version: '2.4'
 services:
 
-  startup-smoke-test:
-    image: curlimages/curl
-    depends_on:
-      scalacassandra:
-        condition: service_healthy
-
   scalacassandra:
     image: scalacassandra:<localBuild>
     ports:
@@ -21,6 +15,7 @@ services:
         condition: service_healthy
 
   cassandra:
+    hostname: cassandra
     image: my_cassandra
     ports:
       - 9042:9042

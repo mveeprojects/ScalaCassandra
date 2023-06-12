@@ -3,12 +3,12 @@ package route
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives.{complete, get, path, _}
 import akka.http.scaladsl.server.Route
-import config.AppConfig._
+import config.AppConfig
 import model.VideoProtocol._
 import service.BackendServices._
 import spray.json._
 
-trait ApiRoutes {
+trait ApiRoutes extends AppConfig {
   private val basePath = "videos" / Segment
   val route: Route = concat(
     get {

@@ -1,1 +1,1 @@
-docker run -d -p9042:9042 --name=cassandra cassandra:3.11.9
+docker run -d -p9042:9042 --name=cassandra cassandra:4.1.0
